@@ -4,8 +4,8 @@ import GooglePlacesAPI from './GooglePlacesAPI';
 import OpenWeather from './OpenWeather';
 
 const TOKENS = {
-  GooglePlacesAPIKey: 'AIzaSyC8epszgqJcjXYRwqmS-tp54BnUIcJj_Ss',
-  OpenWeatherKey: 'a98153167bcbc0ca4a3dfe722a4a98a2',
+  GooglePlacesAPIKey: '',
+  OpenWeatherKey: '',
 };
 
 function handleReponse(response: any) {
