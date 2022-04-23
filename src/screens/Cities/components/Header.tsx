@@ -42,7 +42,7 @@ const Header: React.FC<Props> = ({
       <TouchableOpacity style={{ marginRight: 12 }} onPress={() => setSearching(false)}>
         <Ionicons name="close" color="white" size={24} />
       </TouchableOpacity>
-      <TextInput style={{ color: 'white', fontSize: 16 }} placeholder="nome da cidade" placeholderTextColor="white" onChangeText={(newText) => setText(newText)} value={text} />
+      <TextInput autoFocus style={{ color: 'white', fontSize: 16 }} placeholder="nome da cidade" placeholderTextColor="white" onChangeText={(newText) => setText(newText)} value={text} />
     </View>
   );
 };
