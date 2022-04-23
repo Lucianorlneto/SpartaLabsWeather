@@ -1,15 +1,30 @@
 import React from 'react';
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Cities, Details } from '../../screens';
 
 const Main: React.FC = () => {
-  const MainStack = createNativeStackNavigator();
+  const MainStack = createStackNavigator();
 
   return (
-    <MainStack.Navigator initialRouteName="">
-      <MainStack.Screen name="Cities" component={Cities} options={{ title: 'Cidades' }} />
+    <MainStack.Navigator
+      initialRouteName=""
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#00aaf2',
+        },
+        headerTitleStyle: {
+          color: 'white',
+        },
+      }}
+    >
+      <MainStack.Screen
+        name="Cities"
+        component={Cities}
+      />
       <MainStack.Screen name="Details" component={Details} options={{ title: 'Detalhes' }} />
     </MainStack.Navigator>
   );
