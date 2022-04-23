@@ -19,7 +19,8 @@ const ListItem: React.FC<City> = ({
   return (
     <View style={{
       // borderWidth: 2,
-      margin: 16,
+      // margin: 16,
+      marginVertical: 8,
       height: 130,
       borderRadius: 6,
       // shadowColor: '#171717',
@@ -30,7 +31,7 @@ const ListItem: React.FC<City> = ({
       // shadowRadius: 3,
     }}
     >
-      <Text>aaa</Text>
+      <Text>{name}</Text>
     </View>
   );
 };

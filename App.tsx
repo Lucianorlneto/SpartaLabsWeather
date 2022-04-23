@@ -17,8 +17,14 @@ import SplashScreen from 'react-native-splash-screen';
 
 import Main from './src/navigation';
 
+import { initDatabase, testDb, testDb2 } from './src/database/SQLite';
+
 const App = () => {
   useEffect(() => {
+    initDatabase();
+    // testDb();
+    // testDb2();
+
     SplashScreen.hide();
   });
 

@@ -15,6 +15,21 @@ const initialCities = [
   },
 ];
 
+const initialCities = [
+  {
+    name: 'Blumenau',
+    country: 'Brasil',
+    fav: false,
+  },
+  {
+    name: 'São Paulo',
+    country: 'Brasil',
+    temp: '31',
+    weather: 'Ensolarado',
+    tempRange: '26 - 38',
+  },
+];
+
 const initialCitiesSearch = {
 
 };

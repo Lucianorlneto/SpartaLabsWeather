@@ -8,15 +8,19 @@ import ActionButton from '../ActionButton/index';
 interface newCity{
     name: string,
     country: string,
-    placeId: string
+    placeId: string,
+    setSearching: (boolean: boolean) => void,
+    addCity: (name: string, country: string, placeId: string) => void,
 }
 
-const AddListItem: React.FC<newCity> = ({ name, country, placeId }) => {
+const AddListItem: React.FC<newCity> = ({
+  name, country, placeId, setSearching, addCity,
+}) => {
   const a = 'a';
 
   return (
     <View style={{
-      margin: 16,
+      marginVertical: 8,
       height: 130,
       borderRadius: 6,
       backgroundColor: 'white',
@@ -25,7 +29,13 @@ const AddListItem: React.FC<newCity> = ({ name, country, placeId }) => {
     >
       <Text>{name}</Text>
       <Text>{country}</Text>
-      <ActionButton title="ADICIONAR" submit={() => console.log(placeId)} />
+      <ActionButton
+        title="ADICIONAR"
+        submit={() => {
+          addCity(name, country, placeId);
+          setSearching(false);
+        }}
+      />
     </View>
   );
 };
