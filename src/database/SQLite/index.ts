@@ -49,7 +49,28 @@ const initDatabase = () => db.transaction((txn: SQLTransaction) => {
   );
 });
 
-const addCity = (name: string, country: string, placeId: string) => {
+const addCity = (name: string, country: string, placeId: string) => new Promise((resolve, reject) => {
+  db.transaction((txn: SQLTransaction) => {
+    txn.executeSql(
+      'INSERT INTO Cities (name, country, place_id) VALUES (:name, :country, :place_id)',
+      [name, country, placeId],
+      (tx: SQLTransaction, res: SQLResultSet) => {
+        resolve(res);
+      },
+    );
+  });
+});
+
+const updateCity = (name: string, country: string, placeId: string) => {
+  db.transaction((txn: SQLTransaction) => {
+    txn.executeSql(
+      'INSERT INTO Cities (name, country, place_id) VALUES (:name, :country, :place_id)',
+      [name, country, placeId],
+    );
+  });
+};
+
+const deleteCity = (name: string, country: string, placeId: string) => {
   db.transaction((txn: SQLTransaction) => {
     txn.executeSql(
       'INSERT INTO Cities (name, country, place_id) VALUES (:name, :country, :place_id)',
@@ -61,7 +82,7 @@ const addCity = (name: string, country: string, placeId: string) => {
 const getCities = () => new Promise((resolve, reject) => {
   db.transaction((txn: SQLTransaction) => {
     txn.executeSql(
-      'SELECT * FROM Cities',
+      'SELECT * FROM Cities ORDER BY id',
       [],
       (tx: SQLTransaction, res: SQLResultSet) => {
         const queryResult = [];
@@ -76,5 +97,5 @@ const getCities = () => new Promise((resolve, reject) => {
 });
 
 export {
-  testDb, testDb2, initDatabase, addCity, getCities,
+  testDb, testDb2, initDatabase, addCity, updateCity, deleteCity, getCities,
 };

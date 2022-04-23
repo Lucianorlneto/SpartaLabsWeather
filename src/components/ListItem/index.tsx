@@ -3,6 +3,8 @@ import { View, Text } from 'react-native';
 
 // import { Container } from './styles';
 
+import ActionButton from '../ActionButton/index';
+
 interface City{
     name: string,
     country: string,
@@ -32,6 +34,8 @@ const ListItem: React.FC<City> = ({
     }}
     >
       <Text>{name}</Text>
+      <ActionButton title="fav" submit={() => console.log('aa')} />
+      <ActionButton title="delete" submit={() => console.log('aa')} />
     </View>
   );
 };

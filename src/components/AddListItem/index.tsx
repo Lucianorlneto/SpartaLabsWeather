@@ -10,7 +10,7 @@ interface newCity{
     country: string,
     placeId: string,
     setSearching: (boolean: boolean) => void,
-    addCity: (name: string, country: string, placeId: string) => void,
+    addCity: (name: string, country: string, placeId: string) => Awaited,
 }
 
 const AddListItem: React.FC<newCity> = ({
@@ -32,8 +32,9 @@ const AddListItem: React.FC<newCity> = ({
       <ActionButton
         title="ADICIONAR"
         submit={() => {
-          addCity(name, country, placeId);
-          setSearching(false);
+          addCity(name, country, placeId).then(() => {
+            setSearching(false);
+          });
         }}
       />
     </View>
