@@ -4,6 +4,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { useNavigation } from '@react-navigation/native';
 import colors from '../../../utils/styles/colors';
 
 interface Props {
@@ -16,13 +17,15 @@ interface Props {
 const Header: React.FC<Props> = ({
   searching, setSearching, text, setText,
 }) => {
+  const navigation = useNavigation();
+
   if (!searching) {
     return (
       <View style={{
         justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row',
       }}
       >
-        <TouchableOpacity onPress={() => setSearching(true)}>
+        <TouchableOpacity onPress={() => navigation.push('Configurations')}>
           <MaterialCommunityIcons name="cogs" color="white" size={22} />
         </TouchableOpacity>
         <Text style={{

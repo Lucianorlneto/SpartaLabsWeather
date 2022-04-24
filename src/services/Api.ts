@@ -4,8 +4,8 @@ import GooglePlacesAPI from './GooglePlacesAPI';
 import OpenWeather from './OpenWeather';
 
 const TOKENS = {
-  GooglePlacesAPIKey: '',
-  OpenWeatherKey: '',
+  GooglePlacesAPIKey: 'AIzaSyC8epszgqJcjXYRwqmS-tp54BnUIcJj_Ss',
+  OpenWeatherKey: 'a98153167bcbc0ca4a3dfe722a4a98a2',
 };
 
 function handleReponse(status: number, data: any) {
@@ -17,7 +17,7 @@ function handleReponse(status: number, data: any) {
 }
 
 const Api = {
-  async GoogleAutoComplete(term: string) {
+  async googleAutoComplete(term: string) {
     const response = await GooglePlacesAPI.get(
       `autocomplete/json?input=${term}&language=pt-BR&key=${TOKENS.GooglePlacesAPIKey}&types=(cities)`,
     );
@@ -32,10 +32,22 @@ const Api = {
     return handleReponse(response.status, parsedData);
   },
 
-  async GoogleDetails(placeID: string) {
+  async googleDetails(placeID: string) {
     const response = await GooglePlacesAPI.get(
       `/details/json?fields=name%2Cgeometry%2Caddress_component&place_id=${placeID}&key=${TOKENS.GooglePlacesAPIKey}&language=pt-BR`,
     );
+
+    return handleReponse(response.status, response.data.result);
+  },
+
+  async getWeather(lat: string, lon: string) {
+    const response = await OpenWeather.get(`weather?APPID=${TOKENS.OpenWeatherKey}&lang=pt_br&units=metric&lat=${lat}&lon=${lon}`);
+
+    return handleReponse(response.status, response.data);
+  },
+
+  async get5DaysForecast(lat: string, lon: string) {
+    const response = await OpenWeather.get(`forecast?APPID=${TOKENS.OpenWeatherKey}&lang=pt_br&units=metric&lat=${lat}&lon=${lon}`);
 
     return handleReponse(response.status, response.data);
   },

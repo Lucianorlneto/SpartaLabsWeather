@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import {
-  Text, View, Button, TouchableOpacity,
+  Text, View, Button, TouchableOpacity, RefreshControl,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -21,13 +21,13 @@ const Cities: React.FC<any> = ({ navigation }) => {
   const [text, setText] = useState('');
   const [cities, setCities] = useState([]);
   const [newCities, setNewCities] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   function updateList() {
-    console.log('updateList');
-    getCities().then((data) => {
-      console.log('updateList2');
-      console.log(data);
+    // setCities([]);
+    getCities().then((data: any) => {
       setCities(data);
+      setRefreshing(false);
     });
   }
 
@@ -41,7 +41,7 @@ const Cities: React.FC<any> = ({ navigation }) => {
     });
 
     if (text !== '' && searching) {
-      Api.GoogleAutoComplete(text).then((response) => {
+      Api.googleAutoComplete(text).then((response) => {
         setNewCities(response);
         // console.log(response);
       });
@@ -61,7 +61,18 @@ const Cities: React.FC<any> = ({ navigation }) => {
   if (!searching) {
     if (cities.length > 0) {
       return (
-        <ScrollView contentContainerStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}>
+        <ScrollView
+          contentContainerStyle={{ paddingVertical: 8, paddingHorizontal: 16 }}
+          refreshControl={(
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                setRefreshing(true);
+                updateList();
+              }}
+            />
+          )}
+        >
           {cities.map((city) => (
             <ListItem
               key={city.id}
@@ -70,6 +81,8 @@ const Cities: React.FC<any> = ({ navigation }) => {
               country={city.country}
               name={city.name}
               fav={city.fav}
+              lat={city.lat}
+              lon={city.lon}
               updateList={() => updateList()}
             />
           ))}

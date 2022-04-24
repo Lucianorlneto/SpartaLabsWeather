@@ -6,6 +6,8 @@ import type {
   SQLError,
 } from 'react-native-sqlite-2';
 
+import Api from '../../services/Api';
+
 const db = SQLite.openDatabase('test.db', '1.0', '', 1);
 
 const testDb = () => {
@@ -29,7 +31,7 @@ const testDb2 = () => {
   db.transaction((txn) => {
     txn.executeSql('DROP TABLE IF EXISTS Users', []);
     txn.executeSql(
-      'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27) NOT NULL, fav BOOLEAN DEFAULT false)',
+      'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27), lat TEXT, lon TEXT, NOT NULL, fav BOOLEAN DEFAULT false)',
       [],
     );
   });
@@ -37,20 +39,23 @@ const testDb2 = () => {
 
 const initDatabase = () => db.transaction((txn: SQLTransaction) => {
   txn.executeSql(
-    'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27) NOT NULL, fav BOOLEAN DEFAULT false);',
+    'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27) NOT NULL, lat TEXT NOT NULL, lon TEXT NOT NULL, fav BOOLEAN DEFAULT false);',
     [],
   );
 });
 
 const addCity = (name: string, country: string, placeId: string) => new Promise((resolve, reject) => {
-  db.transaction((txn: SQLTransaction) => {
-    txn.executeSql(
-      'INSERT INTO Cities (name, country, place_id) VALUES (:name, :country, :place_id)',
-      [name, country, placeId],
-      (tx: SQLTransaction, res: SQLResultSet) => {
-        resolve(res);
-      },
-    );
+  Api.googleDetails(placeId).then((response) => {
+    const { geometry: { location: { lat, lng } } } = response;
+    db.transaction((txn: SQLTransaction) => {
+      txn.executeSql(
+        'INSERT INTO Cities (name, country, place_id, lat, lon) VALUES (:name, :country, :place_id, :lat, :lon)',
+        [name, country, placeId, lat, lng],
+        (tx: SQLTransaction, res: SQLResultSet) => {
+          resolve(res);
+        },
+      );
+    });
   });
 });
 
@@ -83,7 +88,7 @@ const deleteCity = (id: number) => new Promise((resolve, reject) => {
 const getCities = () => new Promise((resolve, reject) => {
   db.transaction((txn: SQLTransaction) => {
     txn.executeSql(
-      'SELECT * FROM Cities ORDER BY fav',
+      'SELECT * FROM Cities ORDER BY fav DESC',
       [],
       (tx: SQLTransaction, res: SQLResultSet) => {
         const queryResult = [];

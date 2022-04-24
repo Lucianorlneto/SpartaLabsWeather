@@ -32,7 +32,8 @@ const AddListItem: React.FC<newCity> = ({
       <ActionButton
         title="ADICIONAR"
         submit={() => {
-          addCity(name, country, placeId).then(() => {
+          addCity(name, country, placeId).then((data) => {
+            console.log(data);
             setSearching(false);
           });
         }}
