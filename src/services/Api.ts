@@ -46,8 +46,8 @@ const Api = {
     return handleReponse(response.status, response.data);
   },
 
-  async get5DaysForecast(lat: string, lon: string) {
-    const response = await OpenWeather.get(`forecast?APPID=${TOKENS.OpenWeatherKey}&lang=pt_br&units=metric&lat=${lat}&lon=${lon}`);
+  async get7DaysForecast(lat: string, lon: string) {
+    const response = await OpenWeather.get(`onecall?APPID=${TOKENS.OpenWeatherKey}&lang=pt_br&units=metric&lat=${lat}&lon=${lon}&exclude=minutely,hourly`);
 
     return handleReponse(response.status, response.data);
   },
