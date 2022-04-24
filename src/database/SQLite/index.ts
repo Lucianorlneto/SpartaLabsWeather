@@ -32,13 +32,6 @@ const testDb2 = () => {
       'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27) NOT NULL, fav BOOLEAN DEFAULT false)',
       [],
     );
-    // txn.executeSql('INSERT INTO Cities (name, country, place_id) VALUES (:name, :country, :place_id)', ['nora', 'aaa', '31w3123']);
-    // txn.executeSql('INSERT INTO Users (name) VALUES (:name)', ['takuya']);
-    // txn.executeSql('SELECT * FROM Cities', [], (tx, res) => {
-    //   for (let i = 0; i < res.rows.length; ++i) {
-    //     console.log('item:', res.rows.item(i));
-    //   }
-    // });
   });
 };
 
@@ -61,28 +54,36 @@ const addCity = (name: string, country: string, placeId: string) => new Promise(
   });
 });
 
-const updateCity = (name: string, country: string, placeId: string) => {
+const updateCityFav = (id: number, fav: boolean) => new Promise((resolve, reject) => {
+  console.log(id, fav);
   db.transaction((txn: SQLTransaction) => {
+    console.log(id, fav);
     txn.executeSql(
-      'INSERT INTO Cities (name, country, place_id) VALUES (:name, :country, :place_id)',
-      [name, country, placeId],
+      'UPDATE Cities SET fav = :fav WHERE id = :id',
+      [fav, id],
+      (tx: SQLTransaction, res: SQLResultSet) => {
+        resolve(res);
+      },
     );
   });
-};
+});
 
-const deleteCity = (name: string, country: string, placeId: string) => {
+const deleteCity = (id: number) => new Promise((resolve, reject) => {
   db.transaction((txn: SQLTransaction) => {
     txn.executeSql(
-      'INSERT INTO Cities (name, country, place_id) VALUES (:name, :country, :place_id)',
-      [name, country, placeId],
+      'DELETE FROM Cities WHERE id = :id',
+      [id],
+      (tx: SQLTransaction, res: SQLResultSet) => {
+        resolve(res);
+      },
     );
   });
-};
+});
 
 const getCities = () => new Promise((resolve, reject) => {
   db.transaction((txn: SQLTransaction) => {
     txn.executeSql(
-      'SELECT * FROM Cities ORDER BY id',
+      'SELECT * FROM Cities ORDER BY fav',
       [],
       (tx: SQLTransaction, res: SQLResultSet) => {
         const queryResult = [];
@@ -97,5 +98,5 @@ const getCities = () => new Promise((resolve, reject) => {
 });
 
 export {
-  testDb, testDb2, initDatabase, addCity, updateCity, deleteCity, getCities,
+  testDb, testDb2, initDatabase, addCity, updateCityFav, deleteCity, getCities,
 };

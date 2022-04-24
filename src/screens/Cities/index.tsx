@@ -23,7 +23,10 @@ const Cities: React.FC<any> = ({ navigation }) => {
   const [newCities, setNewCities] = useState([]);
 
   function updateList() {
+    console.log('updateList');
     getCities().then((data) => {
+      console.log('updateList2');
+      console.log(data);
       setCities(data);
     });
   }
@@ -62,11 +65,12 @@ const Cities: React.FC<any> = ({ navigation }) => {
           {cities.map((city) => (
             <ListItem
               key={city.id}
+              id={city.id}
+              placeId={city.place_id}
               country={city.country}
               name={city.name}
-              temp={city.temp}
-              weather={city.weather}
-              tempRange={city.tempRange}
+              fav={city.fav}
+              updateList={() => updateList()}
             />
           ))}
         </ScrollView>

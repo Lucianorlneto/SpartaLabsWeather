@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 
 // import { Container } from './styles';
 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import ActionButton from '../ActionButton/index';
 
+import { getCities, deleteCity, updateCityFav } from '../../database/SQLite';
+
 interface City{
+    updateList: () => void,
+    id: number,
+    placeId: string,
     name: string,
     country: string,
-    temp: string,
-    weather: string,
-    tempRange: string,
+    fav: boolean
 }
 
 const ListItem: React.FC<City> = ({
-  name, country, temp, weather, tempRange,
+  updateList, id, placeId, name, country, fav,
 }) => {
-  const a = 'a';
+  const [favorite, setFavorite] = useState(fav);
 
   return (
     <View style={{
@@ -34,8 +38,30 @@ const ListItem: React.FC<City> = ({
     }}
     >
       <Text>{name}</Text>
-      <ActionButton title="fav" submit={() => console.log('aa')} />
-      <ActionButton title="delete" submit={() => console.log('aa')} />
+      <ActionButton
+        title={favorite ? 'unfav' : 'fav'}
+        submit={() => {
+          updateCityFav(id, !favorite).then(() => {
+            setFavorite(!favorite);
+            getCities().then((data) => {
+              console.log(data);
+            });
+          });
+        }}
+      />
+      <ActionButton
+        title="delete"
+        submit={() => deleteCity(id).then(() => {
+          updateList();
+        })}
+      />
+      {/* <TouchableOpacity onPress={() => deleteCity(id).then(() => {
+        console.log('deletando');
+        updateList();
+      })}
+      >
+        <Text>aaaa</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
