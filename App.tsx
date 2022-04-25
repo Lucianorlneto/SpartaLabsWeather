@@ -8,16 +8,33 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { View } from 'react-native';
+
+import 'react-native-gesture-handler';
+
+import SplashScreen from 'react-native-splash-screen';
 
 import Main from './src/navigation';
 
-const App = () => (
-  <NavigationContainer>
-    <Main />
-  </NavigationContainer>
-);
+import { initDatabase } from './src/database/SQLite';
+
+import { ConfigProvider } from './src/context/config';
+
+const App = () => {
+  useEffect(() => {
+    initDatabase().then(() => {
+      SplashScreen.hide();
+    });
+  });
+
+  return (
+    <NavigationContainer>
+      <ConfigProvider>
+        <Main />
+      </ConfigProvider>
+    </NavigationContainer>
+  );
+};
 
 export default App;
