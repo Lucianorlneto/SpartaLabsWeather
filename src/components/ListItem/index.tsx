@@ -48,6 +48,10 @@ const ListItem: React.FC<City> = ({
     });
   }, []);
 
+  useEffect(() => {
+    if (weather.length > 0) { setLoading(false); }
+  }, [weather]);
+
   return (
     <TouchableOpacity onPress={() => navigation.push('Details', { title: name, lat, lon })}>
       <View style={{

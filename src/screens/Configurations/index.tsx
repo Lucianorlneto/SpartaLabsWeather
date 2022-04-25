@@ -18,8 +18,8 @@ const Configurations: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setUnit(currentUnit);
-  }, [currentUnit]);
+    changeUnit(unit);
+  }, [unit]);
 
   return (
     <View style={{ margin: 24 }}>
@@ -27,7 +27,7 @@ const Configurations: React.FC = () => {
       <Picker
         selectedValue={unit}
         onValueChange={(itemValue: number) => {
-          changeUnit(itemValue);
+          setUnit(itemValue);
         }}
       >
         <Picker.Item key={0} label="Celsius °C" value={0} />

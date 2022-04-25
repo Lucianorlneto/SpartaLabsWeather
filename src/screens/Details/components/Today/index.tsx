@@ -25,7 +25,7 @@ const Today: React.FC<any> = ({ data }) => {
         height: 125, width: 125, alignItems: 'center', justifyContent: 'center',
       }}
       >
-        <Image style={{ flex: 1, height: '100%', width: '100%' }} resizeMode="contain" source={{ uri: `http://openweathermap.org/img/wn/${icon}@4x.png` }} />
+        <Image style={{ flex: 1, height: '100%', width: '100%' }} resizeMode="contain" source={{ uri: `https://openweathermap.org/img/wn/${icon}@4x.png` }} />
       </View>
       <View style={{
         width: '100%', flexDirection: 'row', justifyContent: 'space-between',

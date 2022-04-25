@@ -51,7 +51,7 @@ const NextDays: React.FC = ({ data }) => {
               }}
               >
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Image style={{ height: 50, width: 50 }} source={{ uri: `http://openweathermap.org/img/wn/${icon}@2x.png` }} />
+                  <Image style={{ height: 50, width: 50 }} source={{ uri: `https://openweathermap.org/img/wn/${icon}@2x.png` }} />
                   <Text style={{ color: 'white' }}>
                     {tempValue(temp.day)}
                     °
