@@ -10,17 +10,21 @@ import Api from '../../services/Api';
 
 const db = SQLite.openDatabase('test.db', '1.0', '', 1);
 
-const initDatabase = () => db.transaction((txn: SQLTransaction) => {
-  txn.executeSql(
-    'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27) NOT NULL, lat TEXT NOT NULL, lon TEXT NOT NULL, fav BOOLEAN DEFAULT false);',
-    [],
-  );
+const initDatabase = () => new Promise((resolve, reject) => {
+  db.transaction((txn: SQLTransaction) => {
+    txn.executeSql(
+      'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27) NOT NULL, lat TEXT NOT NULL, lon TEXT NOT NULL, fav BOOLEAN DEFAULT false);',
+      [],
+    );
 
-  txn.executeSql(
-    'CREATE TABLE IF NOT EXISTS Config(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, unit INTEGER NOT NULL DEFAULT 0);',
-    [],
-  );
-  txn.executeSql('INSERT INTO Config (unit) VALUES (:unit)', [0]);
+    txn.executeSql(
+      'CREATE TABLE IF NOT EXISTS Config(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, unit INTEGER NOT NULL DEFAULT 0);',
+      [],
+    );
+    txn.executeSql('INSERT INTO Config (unit) VALUES (:unit)', [0]);
+
+    resolve(true);
+  });
 });
 
 const addCity = (name: string, country: string, placeId: string) => new Promise((resolve, reject) => {
@@ -72,7 +76,6 @@ const getCities = () => new Promise((resolve, reject) => {
         for (let i = 0; i < res.rows.length; i++) {
           queryResult.push(res.rows.item(i));
         }
-
         resolve(queryResult);
       },
     );

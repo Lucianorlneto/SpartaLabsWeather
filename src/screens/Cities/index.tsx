@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import {
-  Text, View, Button, TouchableOpacity, RefreshControl,
+  Text, View, Button, TouchableOpacity, RefreshControl, ActivityIndicator,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -11,20 +11,23 @@ import EmptyList from './components/EmptyList';
 import colors from '../../utils/styles/colors';
 
 // import { initialCities } from '../../utils/constants';
+import { LoadingContainer, Container } from './styles';
 
 import { addCity, getCities } from '../../database/SQLite';
 
 import { ListItem, AddListItem } from '../../components';
 
 const Cities: React.FC<any> = ({ navigation }) => {
-  const [searching, setSearching] = useState(0);
+  const [searching, setSearching] = useState(false);
   const [text, setText] = useState('');
-  const [cities, setCities] = useState([]);
+  const [cities, setCities] = useState(null);
   const [newCities, setNewCities] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   function updateList() {
-    // setCities([]);
+    if (cities === null) {
+      setCities([]);
+    }
     getCities().then((data: any) => {
       setCities(data);
       setRefreshing(false);
@@ -56,6 +59,14 @@ const Cities: React.FC<any> = ({ navigation }) => {
       updateList();
     }
   }, [searching, text]);
+
+  if (cities === null) {
+    return (
+      <LoadingContainer>
+        <ActivityIndicator size="large" color={colors.AZURE} />
+      </LoadingContainer>
+    );
+  }
 
   if (!searching) {
     if (cities.length > 0) {

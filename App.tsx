@@ -23,9 +23,9 @@ import { ConfigProvider } from './src/context/config';
 
 const App = () => {
   useEffect(() => {
-    initDatabase();
-
-    SplashScreen.hide();
+    initDatabase().then(() => {
+      SplashScreen.hide();
+    });
   });
 
   return (
