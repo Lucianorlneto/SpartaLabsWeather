@@ -1,17 +1,14 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import {
-  Text, View, Button, TouchableOpacity, RefreshControl, ActivityIndicator,
+  RefreshControl, ActivityIndicator, ScrollView,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { ScrollView } from 'react-native-gesture-handler';
 import Api from '../../services/Api';
 import Header from './components/Header';
 import EmptyList from './components/EmptyList';
 import colors from '../../utils/styles/colors';
 
-// import { initialCities } from '../../utils/constants';
-import { LoadingContainer, Container } from './styles';
+import { LoadingContainer } from './styles';
 
 import { addCity, getCities } from '../../database/SQLite';
 

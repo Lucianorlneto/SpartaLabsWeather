@@ -3,31 +3,43 @@ import {
   View, Text, ActivityIndicator, Alert,
 } from 'react-native';
 
-// import { Container } from './styles';
+// import { Container, ContainerButton, DeleteButton } from './styles';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import ActionButton from '../ActionButton/index';
 import colors from '../../utils/styles/colors';
 
-import { getCities, deleteCity, updateCityFav } from '../../database/SQLite';
+import { deleteCity, updateCityFav } from '../../database/SQLite';
 
 import Api from '../../services/Api';
 
 import { firstLetterUpperCase } from '../../helper/index';
 
+import {
+  ContainerButton,
+  Container,
+  NamesContainer,
+  CityName,
+  CountryName,
+  WeatherDescription,
+  WeatherRange,
+  WeatherTemp,
+  DeleteButton,
+  FavoriteButton,
+} from './styles';
+
 import useConfig from '../../hooks/configHook';
 
-interface City{
-    updateList: () => void,
-    id: number,
-    placeId: string,
-    name: string,
-    country: string,
-    lat: string,
-    lon: string,
-    fav: boolean
+interface City {
+  updateList: () => void;
+  id: number;
+  placeId: string;
+  name: string;
+  country: string;
+  lat: string;
+  lon: string;
+  fav: boolean;
 }
 
 const ListItem: React.FC<City> = ({
@@ -49,85 +61,56 @@ const ListItem: React.FC<City> = ({
   }, []);
 
   useEffect(() => {
-    if (weather.length > 0) { setLoading(false); }
+    if (weather.length > 0) {
+      setLoading(false);
+    }
   }, [weather]);
 
   return (
-    <TouchableOpacity onPress={() => navigation.push('Details', { title: name, lat, lon })}>
-      <View style={{
-      // borderWidth: 2,
-      // margin: 16,
-        marginVertical: 8,
-        height: 130,
-        borderRadius: 6,
-        // shadowColor: '#171717',
-        // shadowOffset: { width: -2, height: 40 },
-        // shadowOpacity: 0.2,
-        backgroundColor: 'white',
-        elevation: 3,
-        // shadowRadius: 3,
-        padding: 16,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      }}
-      >
+    <ContainerButton onPress={() => navigation.push('Details', { title: name, lat, lon })}>
+      <Container>
         <View>
-          <View style={{
-            height: 55, width: 197, marginBottom: 8,
-          }}
-          >
-            <Text style={{ color: colors.BLACK_60_87, fontSize: 24, letterSpacing: 0 }}>{name}</Text>
-            <Text style={{
-              color: colors.BLACK_60_87, fontSize: 14, letterSpacing: 0.25, lineHeight: 20,
-            }}
-            >
-              {country}
-            </Text>
-          </View>
+          <NamesContainer>
+            <CityName>{name}</CityName>
+            <CountryName>{country}</CountryName>
+          </NamesContainer>
           <View>
-            {loading ? <ActivityIndicator size="small" color={colors.AZURE} /> : (
+            {loading ? (
+              <ActivityIndicator size="small" color={colors.AZURE} />
+            ) : (
               <View>
-                <Text style={{
-                  color: '#f28200', fontSize: 14, letterSpacing: 0.25, lineHeight: 20, marginBottom: 2,
-                }}
-                >
+                <WeatherDescription>
                   {firstLetterUpperCase(weather.weather[0].description)}
-                </Text>
-                <Text style={{
-                  color: colors.BLACK_60_87, letterSpacing: 0.4, lineHeight: 16, fontSize: 12,
-                }}
-                >
+                </WeatherDescription>
+                <WeatherRange>
                   {tempValue(weather.main.temp_min)}
-                  °
-                  {' '}
-                  -
-                  {' '}
+                  ° -
                   {tempValue(weather.main.temp_max)}
                   °
-                </Text>
+                </WeatherRange>
               </View>
             )}
           </View>
         </View>
         <View>
-          {loading ? <ActivityIndicator size="small" color={colors.AZURE} /> : (
-            <Text style={{
-              color: '#f28200', fontSize: 34, letterSpacing: 0.25, marginTop: 8, marginBottom: 11, textAlign: 'center',
-            }}
-            >
+          {loading ? (
+            <ActivityIndicator size="small" color={colors.AZURE} />
+          ) : (
+            <WeatherTemp>
               {tempValue(weather.main.temp)}
               °
-            </Text>
+            </WeatherTemp>
           )}
-          <View style={{
-            flexDirection: 'row', width: 70, justifyContent: 'space-around',
-          }}
+          <View
+            style={{
+              flexDirection: 'row',
+              width: 70,
+              justifyContent: 'space-around',
+            }}
           >
-            <TouchableOpacity onPress={() => {
-              Alert.alert(
-                'Remover cidade',
-                `Deseja realmente remover a cidade ${name}?`,
-                [
+            <DeleteButton
+              onPress={() => {
+                Alert.alert('Remover cidade', `Deseja realmente remover a cidade ${name}?`, [
                   {
                     text: 'NÂO',
                     style: 'cancel',
@@ -138,24 +121,24 @@ const ListItem: React.FC<City> = ({
                       updateList();
                     }),
                   },
-                ],
-              );
-            }}
+                ]);
+              }}
             >
               <FontAwesome name="trash-o" size={25} color={colors.BLACK_60_87} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              updateCityFav(id, !favorite).then(() => {
-                setFavorite(!favorite);
-              });
-            }}
+            </DeleteButton>
+            <FavoriteButton
+              onPress={() => {
+                updateCityFav(id, !favorite).then(() => {
+                  setFavorite(!favorite);
+                });
+              }}
             >
               <FontAwesome name={favorite ? 'heart' : 'heart-o'} colors="#ed0952" size={25} />
-            </TouchableOpacity>
+            </FavoriteButton>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </Container>
+    </ContainerButton>
   );
 };
 

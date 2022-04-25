@@ -5,8 +5,7 @@ import { color } from 'react-native-reanimated';
 
 import ConfigContext from '../../context/config';
 
-// import { Container } from './styles';
-import colors from '../../utils/styles/colors';
+import { Container, Label } from './styles';
 
 const Configurations: React.FC = () => {
   const [unit, setUnit] = useState(0);
@@ -22,8 +21,10 @@ const Configurations: React.FC = () => {
   }, [unit]);
 
   return (
-    <View style={{ margin: 24 }}>
-      <Text style={{ padding: 4, fontSize: 18, color: colors.BLACK_60_87 }}>Alternar unidade de temperatura:</Text>
+    <Container>
+      <Label>
+        Alternar unidade de temperatura:
+      </Label>
       <Picker
         selectedValue={unit}
         onValueChange={(itemValue: number) => {
@@ -33,7 +34,7 @@ const Configurations: React.FC = () => {
         <Picker.Item key={0} label="Celsius °C" value={0} />
         <Picker.Item key={1} label="Fahrenheit °F" value={1} />
       </Picker>
-    </View>
+    </Container>
   );
 };
 

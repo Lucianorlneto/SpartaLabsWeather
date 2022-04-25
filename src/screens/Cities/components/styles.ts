@@ -1,6 +1,40 @@
 import styled from 'styled-components/native';
 import colors from '../../../utils/styles/colors';
 
+export const HeaderContainer = styled.View`
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+`;
+
+export const HeaderTitle = styled.Text`
+    font-size: 22px;
+    color: white;
+`;
+
+export const ConfigButton = styled.TouchableOpacity`
+
+`;
+
+export const SearchButton = styled.TouchableOpacity`
+
+`;
+
+export const HeaderSearchContainer = styled.View`
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+`;
+
+export const CancelButton = styled.TouchableOpacity`
+    margin-right: 12px;
+`;
+
+export const SearchInput = styled.TextInput`
+    color: white;
+    font-size: 16px;
+`;
+
 export const Container = styled.View`
   flex: 1;
   margin: 140px 16px 140px 16px;

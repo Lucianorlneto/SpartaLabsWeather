@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator, Image, Text, View, Animated, ScrollView,
+  ActivityIndicator, ScrollView,
 } from 'react-native';
 
 // import { Container } from './styles';
 import Api from '../../services/Api';
 
-import colors from '../../utils/styles/colors';
-
 import { FadeInView } from '../../components';
 import { NextDays, Today } from './components';
+
+import { LoadingContainer, Container } from './styles';
 
 const Details: React.FC = ({ route }) => {
   const [loading, setLoading] = useState(true);
@@ -26,24 +26,21 @@ const Details: React.FC = ({ route }) => {
 
   if (loading) {
     return (
-      <View style={{
-        flex: 1, backgroundColor: colors.AZURE_60, justifyContent: 'center',
-      }}
-      >
+      <LoadingContainer>
         <ActivityIndicator size="large" color="white" />
-      </View>
+      </LoadingContainer>
     );
   }
 
   return (
-    <View style={{ backgroundColor: colors.AZURE_60, flex: 1 }}>
+    <Container>
       <FadeInView>
         <ScrollView>
           <Today data={forecast.current} />
           <NextDays data={forecast.daily} />
         </ScrollView>
       </FadeInView>
-    </View>
+    </Container>
   );
 };
 
