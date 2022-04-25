@@ -14,5 +14,5 @@
 <h2>About</h2>
 <p>Cities Weather Forecast Application using Google Places API to search for cities and OpenWeatherAPI to get the location weather forecast.</p>
 <p>On the configuration screen, you can change the temperature unit. Options available: celsius and fahrenheit.<p/>
-<p>Android .apk can be found inside "Apk" folder.<p/>
+<p>Android .apk can be found inside "apk" folder.<p/>
 <p>Developed as a solution for a test.</p>
