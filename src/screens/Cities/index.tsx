@@ -43,7 +43,6 @@ const Cities: React.FC<any> = ({ navigation }) => {
     if (text !== '' && searching) {
       Api.googleAutoComplete(text).then((response) => {
         setNewCities(response);
-        // console.log(response);
       });
     }
 

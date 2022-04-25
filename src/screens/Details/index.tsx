@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator, Image, Text, View, Animated, ScrollView,
 } from 'react-native';
@@ -23,8 +23,6 @@ const Details: React.FC = ({ route }) => {
       setLoading(false);
     });
   }, []);
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   if (loading) {
     return (

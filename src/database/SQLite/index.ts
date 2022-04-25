@@ -10,38 +10,17 @@ import Api from '../../services/Api';
 
 const db = SQLite.openDatabase('test.db', '1.0', '', 1);
 
-const testDb = () => {
-  db.transaction((txn) => {
-    txn.executeSql('DROP TABLE IF EXISTS Users', []);
-    txn.executeSql(
-      'CREATE TABLE IF NOT EXISTS Users(user_id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30))',
-      [],
-    );
-    txn.executeSql('INSERT INTO Users (name) VALUES (:name)', ['nora']);
-    txn.executeSql('INSERT INTO Users (name) VALUES (:name)', ['takuya']);
-    txn.executeSql('SELECT * FROM `users`', [], (tx, res) => {
-      for (let i = 0; i < res.rows.length; ++i) {
-        console.log('item:', res.rows.item(i));
-      }
-    });
-  });
-};
-
-const testDb2 = () => {
-  db.transaction((txn) => {
-    txn.executeSql('DROP TABLE IF EXISTS Users', []);
-    txn.executeSql(
-      'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27), lat TEXT, lon TEXT, NOT NULL, fav BOOLEAN DEFAULT false)',
-      [],
-    );
-  });
-};
-
 const initDatabase = () => db.transaction((txn: SQLTransaction) => {
   txn.executeSql(
     'CREATE TABLE IF NOT EXISTS Cities(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(60) NOT NULL, country VARCHAR(60) NOT NULL, place_id VARCHAR(27) NOT NULL, lat TEXT NOT NULL, lon TEXT NOT NULL, fav BOOLEAN DEFAULT false);',
     [],
   );
+
+  txn.executeSql(
+    'CREATE TABLE IF NOT EXISTS Config(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, unit INTEGER NOT NULL DEFAULT 0);',
+    [],
+  );
+  txn.executeSql('INSERT INTO Config (unit) VALUES (:unit)', [0]);
 });
 
 const addCity = (name: string, country: string, placeId: string) => new Promise((resolve, reject) => {
@@ -60,9 +39,7 @@ const addCity = (name: string, country: string, placeId: string) => new Promise(
 });
 
 const updateCityFav = (id: number, fav: boolean) => new Promise((resolve, reject) => {
-  console.log(id, fav);
   db.transaction((txn: SQLTransaction) => {
-    console.log(id, fav);
     txn.executeSql(
       'UPDATE Cities SET fav = :fav WHERE id = :id',
       [fav, id],
@@ -102,6 +79,30 @@ const getCities = () => new Promise((resolve, reject) => {
   });
 });
 
+const updateConfig = (unit: number) => new Promise((resolve, reject) => {
+  db.transaction((txn: SQLTransaction) => {
+    txn.executeSql(
+      'UPDATE Config SET unit = :unit WHERE id = 1',
+      [unit],
+      (tx: SQLTransaction, res: SQLResultSet) => {
+        resolve(res);
+      },
+    );
+  });
+});
+
+const getConfig = () => new Promise((resolve, reject) => {
+  db.transaction((txn: SQLTransaction) => {
+    txn.executeSql(
+      'SELECT * FROM Config',
+      [],
+      (tx: SQLTransaction, res: SQLResultSet) => {
+        resolve(res.rows.item(0));
+      },
+    );
+  });
+});
+
 export {
-  testDb, testDb2, initDatabase, addCity, updateCityFav, deleteCity, getCities,
+  initDatabase, addCity, updateCityFav, deleteCity, getCities, updateConfig, getConfig,
 };

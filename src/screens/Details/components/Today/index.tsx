@@ -3,13 +3,17 @@ import { View, Text, Image } from 'react-native';
 
 // import { Container } from './styles';
 
-import firstLetterUpperCase from '../../../../helper';
+import { firstLetterUpperCase } from '../../../../helper';
+
+import useConfig from '../../../../hooks/configHook';
 
 const Today: React.FC<any> = ({ data }) => {
   const {
     weather, temp, feels_like, wind_speed, humidity,
   } = data;
   const { icon, description } = weather[0];
+
+  const { tempValue } = useConfig();
 
   return (
     <View style={{
@@ -37,7 +41,7 @@ const Today: React.FC<any> = ({ data }) => {
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={{ color: 'white', fontSize: 20 }}>{firstLetterUpperCase(description)}</Text>
           <Text style={{ color: 'white', fontSize: 44 }}>
-            {Math.round(temp)}
+            {tempValue(temp)}
             °
           </Text>
         </View>

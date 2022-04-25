@@ -19,6 +19,8 @@ import Main from './src/navigation';
 
 import { initDatabase, testDb, testDb2 } from './src/database/SQLite';
 
+import { ConfigProvider } from './src/context/config';
+
 const App = () => {
   useEffect(() => {
     initDatabase();
@@ -30,7 +32,9 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Main />
+      <ConfigProvider>
+        <Main />
+      </ConfigProvider>
     </NavigationContainer>
   );
 };
